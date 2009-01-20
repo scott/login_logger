@@ -1,13 +1,38 @@
-LoginLogger
+LoginLogger v0.1
 ===========
 
-Introduction goes here.
+Login Logger logs any login activity on your site to a table in your database, and also helps protect against abuse, 
+by letting you monitor failed logins.
 
+To get started:
+
+1. script/generate login_logger_migration
+2. rake db:migrate
+
+This sets up the login_logs table in your DB.
+
+3. add to your SessionsController
+
+include LoginLogger
+after_filter :log_login, :only => 'create'
+
+Add this to your User Model:
+
+has_many :login_logs 
 
 Example
-=======
+===========
 
-Example goes here.
+Now you can do things like:
+
+Last Time a user logged in:
+--
+current_user.login_logs.last
+
+Failed Logins in last ten minutes:
+--
+LoginLog.failed.last_ten_minutes
 
 
-Copyright (c) 2009 [name of plugin creator], released under the MIT license
+
+Copyright (c) 2009 Scott Miller, released under the MIT license
