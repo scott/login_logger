@@ -1,6 +1,5 @@
 # LoginLogger
-#module Brainnovate
-
+module Brainnovate
   module LoginLogger
     
     def log_login
@@ -15,21 +14,32 @@
                         :ip_address => request.remote_ip)    
       end
     end
-  
   end
-  
-  module IsLoggable
 
-    def self.included(mod)
-      mode.extend(ClassMethods)
-    end
- 
-    module ClassMethods
-      def is_loggable
-        has_many :login_logs
+  module Is #:nodoc:
+    module Loggable #:nodoc:
+
+      def self.included(base)
+        base.extend ClassMethods
+      end
+
+      module ClassMethods
+        def is_loggable
+          
+          has_many :login_logs, :order => 'created_at ASC'
+          
+          include Brainnovate::Is::Loggable::InstanceMethods
+          extend Brainnovate::Is::Loggable::SingletonMethods
+        end
+      end
+
+      module SingletonMethods
+        # Add class methods here
+      end
+
+      module InstanceMethods
+        # Add instance methods here
       end
     end
-
   end
-
-#end
+end

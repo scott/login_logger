@@ -11,14 +11,15 @@ To get started:
 
 This sets up the login_logs table in your DB.
 
-3. add to your SessionsController
+3. Add to your SessionsController
 
 include LoginLogger
 after_filter :log_login, :only => 'create'
 
 Add this to your User Model:
 
-has_many :login_logs 
+is_loggable
+
 
 Example
 ===========
